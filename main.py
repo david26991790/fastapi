@@ -4,7 +4,7 @@ import sqlite3
 from sqlite3 import Error
 from sqlite3 import Connection
 from typing import Optional
-
+from typing import Tuple
 app = FastAPI()
 
 def create_connection(db_file: str) -> Optional[Connection]:
@@ -32,7 +32,7 @@ def create_table(conn:Connection):
     except:
         print("error")
 
-def insert_project(conn:Connection, project:tuple[str,float,float]):
+def insert_project(conn: Connection, project: Tuple[str, float, float]):
     sql = """
     INSERT INTO iot1(date,light,temperature)
     VALUES(?,?,?)
