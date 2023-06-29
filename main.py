@@ -45,7 +45,7 @@ def insert_project(conn: Connection, project: tuple[str, float, float]):
 def select_all_tasks(conn: Connection, count: int):
     sql = f"""
         SELECT * FROM iot1
-        ORDER by date DESC
+        ORDER BY date DESC
         LIMIT {count}
     """
     cursor = conn.cursor()
