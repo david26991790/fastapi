@@ -3,10 +3,11 @@ from datetime import datetime
 import sqlite3
 from sqlite3 import Error
 from sqlite3 import Connection
+from typing import Optional
 
 app = FastAPI()
 
-def create_connection(db_file:str) -> Connection | None:
+def create_connection(db_file: str) -> Optional[Connection]:
     conn = None
     try:
         conn = sqlite3.connect(db_file)
