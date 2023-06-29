@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from datetime import datetime
 import sqlite3
 from sqlite3 import Error, Connection
+from typing import Tuple
 
 app = FastAPI()
 db_file = 'data.db'
@@ -32,7 +33,7 @@ def create_table(conn: Connection):
         print(e)
 
 
-def insert_project(conn: Connection, project: tuple[str, float, float]):
+def insert_project(conn: Connection, project: Tuple[str, float, float]):
     sql = """
     INSERT INTO iot1(date, light, temperature)
     VALUES (?, ?, ?)
@@ -42,51 +43,4 @@ def insert_project(conn: Connection, project: tuple[str, float, float]):
     conn.commit()
 
 
-def select_all_tasks(conn: Connection, count: int):
-    sql = f"""
-        SELECT * FROM iot1
-        ORDER BY date DESC
-        LIMIT {count}
-    """
-    cursor = conn.cursor()
-    cursor.execute(sql)
-    rows = cursor.fetchall()
-    return rows
-
-
-@app.get("/")
-def read_root():
-    return {"Hello": "robert"}
-
-
-@app.get("/items/{item_id}")
-async def read_item1(item_id: int):
-    return {"item_id": item_id}
-
-
-@app.get("/raspberry")
-async def read_item(
-    time: str = datetime.now().strftime("%Y%m%d %H:%M:%S"),
-    light: float = 0.0,
-    temperature: float = 0.0
-):
-    conn = create_connection()
-    if conn is not None:
-        create_table(conn)
-        insert_project(conn, (time, light, temperature))
-        conn.close()
-    return {
-        "時間": time,
-        "光線": light,
-        "溫度": temperature
-    }
-
-
-@app.get("/iot_json/{item_count}")
-async def read_item2(item_count: int):
-    conn = create_connection()
-    if conn is not None:
-        create_table(conn)
-        rows = select_all_tasks(conn, item_count)
-        conn.close()
-        return rows
+def select_all_tasks(conn: Connection, count:
