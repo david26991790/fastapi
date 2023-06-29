@@ -7,7 +7,7 @@ app = FastAPI()
 db_file = 'data.db'
 
 
-def create_connection() -> Connection | None:
+def create_connection() -> Connection:
     conn = None
     try:
         conn = sqlite3.connect(db_file)
@@ -34,8 +34,8 @@ def create_table(conn: Connection):
 
 def insert_project(conn: Connection, project: tuple[str, float, float]):
     sql = """
-    INSERT INTO iot1(date,light,temperature)
-    VALUES(?,?,?)
+    INSERT INTO iot1(date, light, temperature)
+    VALUES (?, ?, ?)
     """
     cursor = conn.cursor()
     cursor.execute(sql, project)
